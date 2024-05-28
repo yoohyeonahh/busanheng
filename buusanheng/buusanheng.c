@@ -1,3 +1,22 @@
+/*
+[ 진행상황 ]
+2-1. 정리(O)
+2-2. 부산헹(1)에서 수정
+    - 파라미터(O)
+    - 입력값 처리()
+    - 마동석 체력 추가(O)
+    - 시민, 마동석 어그로 추가()
+    - sleep() 삭제
+    - 2Phases()
+2-3. <이동>()
+2-4. <행동>()
+
+3-1. 스테이지()
+3-2. 스테이지2:빌런()
+3-3. 스테이지3:시민'들'()
+3-4. 스테이지4:변이()
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <Windows.h>
@@ -53,23 +72,12 @@ void printTrain(int len, int C, int Z, int M) { // 기차 상태 출력
         printf("#");
     }
     printf("\n");
-
     for (int i = 0; i < len; i++) {
-        if (i == 0 || i == len - 1) {
-            printf("#");
-        }
-        else if (i == M) {
-            printf("M");
-        }
-        else if (i == Z) {
-            printf("Z");
-        }
-        else if (i == C) {
-            printf("C");
-        }
-        else {
-            printf(" ");
-        }
+        if (i == 0 || i == len - 1) printf("#");
+        else if (i == M) printf("M");           
+        else if (i == Z) printf("Z"); 
+        else if (i == C) printf("C");
+        else printf(" ");  
     }
     printf("\n");
 
@@ -136,6 +144,7 @@ int main(void) {
 
     int len = 0;
     int p = 0;
+    int stm = 0;
     int turn = 1;
 
     intro();
@@ -148,6 +157,14 @@ int main(void) {
         return -1;
     }
 
+    printf("madongseok stamina(0~5) >> ");
+    scanf_s("%d", &stm);
+
+    if (STM_MIN > stm || STM_MAX < stm) {
+        printf("잘못된 입력입니다. \n");
+        return -1;
+    }
+
     printf("percentile probability 'p' (10~90) >> ");
     scanf_s("%d", &p);
 
@@ -155,6 +172,8 @@ int main(void) {
         printf("잘못된 입력입니다. \n");
         return -1;
     }
+
+
 
     // 시민, 좀비, 마동석 초기 위치 정의
     int C = len - 6;

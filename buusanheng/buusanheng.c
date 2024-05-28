@@ -3,7 +3,7 @@
 2-1. 정리(O)
 2-2. 부산헹(1)에서 수정
     - 파라미터(O)
-    - 입력값 처리()
+    - 입력값 처리(O)
     - 마동석 체력 추가(O)
     - 시민, 마동석 어그로 추가()
     - sleep() 삭제
@@ -149,31 +149,41 @@ int main(void) {
 
     intro();
 
-    printf("train length(15~50) >> ");
-    scanf_s("%d", &len);
+    while (1) {
+        printf("train length(15~50) >> ");
+        scanf_s("%d", &len);
 
-    if (LEN_MIN > len || LEN_MAX < len) {
-        printf("잘못된 입력입니다. \n");
-        return -1;
+        if (LEN_MIN <= len && LEN_MAX >= len) {
+            break;
+        } 
+        else if (LEN_MIN > len || LEN_MAX < len) {
+            continue;
+        }
+    }
+   
+    while (1) {
+        printf("madongseok stamina(0~5) >> ");
+        scanf_s("%d", &stm);
+
+        if (STM_MIN <= stm && STM_MAX >= stm) {
+            break;
+        }
+        else if (STM_MIN > stm || STM_MAX < stm) {
+            continue;
+        }
     }
 
-    printf("madongseok stamina(0~5) >> ");
-    scanf_s("%d", &stm);
+    while (1) {
+        printf("percentile probability 'p' (10~90) >> ");
+        scanf_s("%d", &p);
 
-    if (STM_MIN > stm || STM_MAX < stm) {
-        printf("잘못된 입력입니다. \n");
-        return -1;
+        if (PROB_MIN <= p && PROB_MAX >= p) {
+            break;
+        }
+        else  if (PROB_MIN > p || PROB_MAX < p) {
+            continue;
+        }
     }
-
-    printf("percentile probability 'p' (10~90) >> ");
-    scanf_s("%d", &p);
-
-    if (PROB_MIN > p || PROB_MAX < p) {
-        printf("잘못된 입력입니다. \n");
-        return -1;
-    }
-
-
 
     // 시민, 좀비, 마동석 초기 위치 정의
     int C = len - 6;

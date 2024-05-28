@@ -87,12 +87,20 @@ void printTrain(int len, int C, int Z, int M) { // 기차 상태 출력
     printf("\n");
 }
 
-void printStatus(int cPos, int C, int zPos, int Z, int turn) { // 시민, 좀비 상태 출력
+void printStatus(int cPos, int C, int zPos, int Z, int turn, int aggro) { // 시민, 좀비 상태 출력
     if (cPos > C) {
-        printf("\ncitizen : %d -> %d\n", cPos, C);
+        aggro++;
+        if (aggro >= AGGRO_MAX) {
+            aggro = AGGRO_MAX;
+        }
+        printf("\ncitizen : %d -> %d (aggro : %d)\n", cPos, C, aggro);
     }
     else {
-        printf("\ncitizen : stay %d\n", C);
+        aggro--;
+        if (aggro <= AGGRO_MIN) {
+            aggro = AGGRO_MIN;
+        }
+        printf("\ncitizen : stay %d (aggro : %d)\n", C, aggro);
     }
 
     if (zPos > Z) {
@@ -108,7 +116,7 @@ void printStatus(int cPos, int C, int zPos, int Z, int turn) { // 시민, 좀비 상�
     }
 }
 
-int citizenMove(int C, int p, int random) { // 시민이동
+int citizenMove(int C, int p, int random, int aggro) { // 시민이동
     if (random >= p) {
         if (C > 0) {
             C = C - 1;
@@ -146,6 +154,8 @@ int main(void) {
     int p = 0;
     int stm = 0;
     int turn = 1;
+    int citizen_aggro = 1;
+    int dongseok_aggro = 1;
 
     intro();
 
@@ -197,12 +207,12 @@ int main(void) {
         int zPos = Z;
         int random = rand() % 100;
 
-        C = citizenMove(C, p, random); //시민이동
+        C = citizenMove(C, p, random, citizen_aggro); //시민이동
         Z = zombieMove(Z, p, random, turn);
 
         printTrain(len, C, Z, M);
-        printStatus(cPos, C, zPos, Z, turn);
-        Sleep(4000);
+        printStatus(cPos, C, zPos, Z, turn, citizen_aggro);
+        Sleep(2000);
 
         if (C == 1) { // 시민이 가장 왼쪽 칸에 도착할 경우 성공
             break;

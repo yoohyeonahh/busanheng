@@ -2,19 +2,13 @@
 [ 진행상황 ]
 2-1. 정리(O)
 2-2. 부산헹(1)에서 수정
-    - 파라미터(O)
-    - 입력값 처리(O)
-    - 마동석 체력 추가(O)
-    - 시민, 마동석 어그로 추가()
     - sleep() 삭제
-    - 2Phases()
-2-3. <이동>
-    - 시민 이동 규칙(O)
-    - 좀비 이동 규칙(O)
+2-3. <이동>()
         - 마동석 붙들기()
-    - 마동석 이동 규칙(O)
-        - 왼쪽으로 못가는 상태()
 2-4. <행동>()
+    - 좀비 행동 규칙()
+    - 마동석 공격 당함()
+    - 마동석 행동 규칙()
 
 3-1. 스테이지()
 3-2. 스테이지2:빌런()
@@ -200,9 +194,31 @@ int zombieMove(int Z, int C, int M, int turn) { // 좀비이동
     return Z;
 }
 
-int dongseokMove(int M, int ans, int aggro) { // 마동석이동
-    printf("madongseok move(0:stay, 1:left) >> ");
-    scanf_s("%d", &ans);
+int dongseokMove(int M, int Z, int ans, int aggro) { // 마동석이동
+    while (1) {
+        if (M - 1 != Z) {
+            printf("madongseok move(0:stay, 1:left) >> ");
+            scanf_s("%d", &ans);
+            if (0 == ans || ans == 1) {
+                break;
+            } 
+            else {
+                continue;
+            }
+        }
+        else {
+            printf("madongseok move(0:stay) >> ");
+            scanf_s("%d", &ans);
+            if (ans == 0) {
+                break;
+            }
+            else {
+                continue;
+            }
+        }
+
+        
+    }
 
     if (ans == 1) {
         if (M > 0) {
@@ -299,7 +315,7 @@ int main(void) {
         printCitizenStatus(cPos, C, CITIZEN_AGGRO);
         printZombieStatus(zPos, Z, turn);
 
-        M = dongseokMove(M, mAns, DONGSEOK_AGGRO);
+        M = dongseokMove(M, Z, mAns, DONGSEOK_AGGRO);
         printTrain(len, C, Z, M);
         printDongseokStatus(mPos, M, DONGSEOK_AGGRO, stm);
 

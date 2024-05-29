@@ -1,5 +1,4 @@
 ﻿  buusanheng.c
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(60,12): warning C4129: '-': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(160,25): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(146): warning C4716: 'dongseokMove': 값을 반환해야 합니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(63,12): warning C4129: '-': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(234,25): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
   buusanheng.vcxproj -> C:\Users\yha12\source\repos\buusanheng\x64\Debug\buusanheng.exe

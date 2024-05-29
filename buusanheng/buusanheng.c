@@ -9,9 +9,11 @@
     - sleep() 삭제
     - 2Phases()
 2-3. <이동>
-    - 시민 이동 규칙()
-    - 좀비 이동 규칙()
-    - 마동석 이동 규칙()
+    - 시민 이동 규칙(O)
+    - 좀비 이동 규칙(O)
+        - 마동석 붙들기()
+    - 마동석 이동 규칙(O)
+        - 왼쪽으로 못가는 상태()
 2-4. <행동>()
 
 3-1. 스테이지()
@@ -140,6 +142,39 @@ void printZombieStatus(int zPos, int Z, int turn) { // 좀비 상태 출력
     }
 }
 
+void printDongseokStatus(int mPos, int M, int aggro, int stamina) { // 마동석 상태 출력
+    if (mPos > M) {
+        if (aggro + 1 > AGGRO_MAX) {
+            aggro = AGGRO_MAX;
+        }
+        else {
+            aggro = DONGSEOK_AGGRO + 1;
+        }
+        printf("\nmadongseok : %d -> %d (aggro : %d -> %d, stamina : %d)\n", mPos, M, DONGSEOK_AGGRO, aggro, stamina);
+        if (DONGSEOK_AGGRO + 1 > AGGRO_MAX) {
+            DONGSEOK_AGGRO = AGGRO_MAX;
+        }
+        else {
+            DONGSEOK_AGGRO++;
+        }
+    }
+    else {
+        if (aggro - 1 < AGGRO_MIN) {
+            aggro = AGGRO_MIN;
+        }
+        else {
+            aggro = DONGSEOK_AGGRO - 1;
+        }
+        printf("\nmadongseok : stay %d (aggro : %d -> %d, stamina : %d)\n", M, DONGSEOK_AGGRO, aggro, stamina);
+        if (DONGSEOK_AGGRO - 1 < AGGRO_MIN) {
+            DONGSEOK_AGGRO = AGGRO_MIN;
+        }
+        else {
+            DONGSEOK_AGGRO--;
+        }
+    }
+}
+
 int citizenMove(int C, int p, int random, int aggro) { // 시민이동
     if (random >= p) {
         if (C > 0) {
@@ -149,11 +184,16 @@ int citizenMove(int C, int p, int random, int aggro) { // 시민이동
     return C;
 }
 
-int zombieMove(int Z, int p, int random, int turn) { // 좀비이동
+int zombieMove(int Z, int C, int M, int turn) { // 좀비이동
     if (turn % 2 == 1) {
-        if (random < p) {
-            if (Z > 0) {
+        if (CITIZEN_AGGRO >= DONGSEOK_AGGRO) {
+            if (C + 1 != Z) {
                 Z = Z - 1;
+            }
+        }
+        else {
+            if (M - 1 != Z) {
+                Z = Z + 1;
             }
         }
     }
@@ -169,7 +209,17 @@ int dongseokMove(int M, int ans, int aggro) { // 마동석이동
             M = M - 1;
         }
     }
+    return M;
 }
+/*
+void printAction() { // 좀비, 시민 행동 출력
+
+}
+
+int dongseokAction(int aAns, int aggro, int stamina) { // 마동석 행동 출력 
+
+}
+*/
 
 void outro(int C, int Z) {
     if (C == 1) {
@@ -189,8 +239,6 @@ int main(void) {
     int p = 0;
     int stm = 0;
     int turn = 1;
-    int citizen_aggro = 1;
-    int dongseok_aggro = 1;
 
     intro();
 
@@ -240,14 +288,21 @@ int main(void) {
     while (1) {
         int cPos = C;
         int zPos = Z;
+        int mPos = M;
+        int mAns = 0;
         int random = rand() % 100;
 
-        C = citizenMove(C, p, random, citizen_aggro); //시민이동
-        Z = zombieMove(Z, p, random, turn);
+        C = citizenMove(C, p, random, CITIZEN_AGGRO); //시민이동
+        Z = zombieMove(Z, C, M, turn);
 
         printTrain(len, C, Z, M);
-        printCitizenStatus(cPos, C, citizen_aggro);
+        printCitizenStatus(cPos, C, CITIZEN_AGGRO);
         printZombieStatus(zPos, Z, turn);
+
+        M = dongseokMove(M, mAns, DONGSEOK_AGGRO);
+        printTrain(len, C, Z, M);
+        printDongseokStatus(mPos, M, DONGSEOK_AGGRO, stm);
+
         Sleep(2000);
 
         if (C == 1) { // 시민이 가장 왼쪽 칸에 도착할 경우 성공

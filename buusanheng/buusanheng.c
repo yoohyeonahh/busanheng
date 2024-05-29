@@ -35,7 +35,7 @@
 
 // 마동석 이동 방향
 #define MOVE_LEFT 1
-#define MOVE_STAY
+#define MOVE_STAY 0
 
 // 좀비의 공격 대상
 #define ATK_NONE 0
@@ -46,6 +46,9 @@
 #define ACTION_REST
 #define ACTION_PROVOKE 1
 #define ACTION_PULL 2
+
+int CITIZEN_AGGRO = 1;
+int DONGSEOK_AGGRO = 1;
 
 void intro(void) {
     printf("                (@@@@@@)    (@@@@@@)\n");
@@ -92,10 +95,34 @@ void printTrain(int len, int C, int Z, int M) { // 기차 상태 출력
 
 void printCitizenStatus(int cPos, int C, int aggro) { // 시민 상태 출력
     if (cPos > C) {
-            printf("\ncitizen : %d -> %d (aggro : %d)\n", cPos, C, aggro);
+        if (aggro + 1 > AGGRO_MAX) {
+            aggro = AGGRO_MAX;
+        }
+        else {
+            aggro = CITIZEN_AGGRO + 1;
+        }
+        printf("\ncitizen : %d -> %d (aggro : %d -> %d)\n", cPos, C, CITIZEN_AGGRO, aggro);
+        if (CITIZEN_AGGRO + 1 > AGGRO_MAX) {
+            CITIZEN_AGGRO = AGGRO_MAX;
+        }
+        else {
+            CITIZEN_AGGRO++;
+        }
     }
     else {
-        printf("\ncitizen : stay %d (aggro : %d)\n", C, aggro);
+        if (aggro - 1 < AGGRO_MIN) {
+            aggro = AGGRO_MIN;
+        }
+        else {
+            aggro = CITIZEN_AGGRO - 1;
+        }
+        printf("\ncitizen : stay %d (aggro : %d -> %d)\n", C, CITIZEN_AGGRO, aggro);
+        if (CITIZEN_AGGRO - 1 < AGGRO_MIN) {
+            CITIZEN_AGGRO = AGGRO_MIN;
+        }
+        else {
+            CITIZEN_AGGRO--;
+        }
     }
 }
 
@@ -117,7 +144,6 @@ int citizenMove(int C, int p, int random, int aggro) { // 시민이동
     if (random >= p) {
         if (C > 0) {
             C = C - 1;
-            aggro++;
         }
     }
     return C;

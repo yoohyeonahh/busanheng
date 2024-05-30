@@ -1,7 +1,7 @@
 ﻿  buusanheng.c
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(60,12): warning C4129: '-': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(319,25): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(390,54): warning C4020: 'printDongseokStatus': 실제 매개 변수가 너무 많습니다.
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(393,30): warning C4020: 'printAction': 실제 매개 변수가 너무 많습니다.
-C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(394,65): warning C4020: 'printdongseokAction': 실제 매개 변수가 너무 많습니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(59,12): warning C4129: '-': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(334,25): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(405,54): warning C4020: 'printDongseokStatus': 실제 매개 변수가 너무 많습니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(418,30): warning C4020: 'printAction': 실제 매개 변수가 너무 많습니다.
+C:\Users\yha12\source\repos\buusanheng\buusanheng\buusanheng.c(419,65): warning C4020: 'printdongseokAction': 실제 매개 변수가 너무 많습니다.
   buusanheng.vcxproj -> C:\Users\yha12\source\repos\buusanheng\x64\Debug\buusanheng.exe

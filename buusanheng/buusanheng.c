@@ -5,9 +5,6 @@
 2-3. <ÀÌµ¿>(O)
 2-4. <Çàµ¿>(O)
 
-    - ¸¶µ¿¼® Ã¼·Â ÃÖ¼Ò, ÃÖ´ë°ª ¹üÀ§ Á¤ÇØÁÖ±â
-    - ¿¹¿Ü Ã³¸® Á¦´ë·Î µÇ¾ú´ÂÁö È®ÀÎÇÏ±â
-
 3-1. ½ºÅ×ÀÌÁö()
 3-2. ½ºÅ×ÀÌÁö2:ºô·±()
 3-3. ½ºÅ×ÀÌÁö3:½Ã¹Î'µé'()
@@ -239,7 +236,7 @@ void printAction(int C, int Z, int M) { // Á»ºñ, ½Ã¹Î Çàµ¿ Ãâ·Â
     else if (C + 1 != Z && M - 1 == Z) {
         printf("Zombie attacked madongseok (aggro : %d vs %d, madongseok stamina : %d -> %d)\n",
             CITIZEN_AGGRO, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA -1);
-        DONGSEOK_STAMINA--;
+        DONGSEOK_STAMINA = DONGSEOK_STAMINA - 1;
     }
 }
 
@@ -257,7 +254,7 @@ void printdongseokAction(int aAns, int M, int random, int p, int aggro) { // ¸¶µ
     }
     switch (aAns) {
         case ACTION_REST:
-            if (DONGSEOK_AGGRO - 1 != AGGRO_MIN) {
+            if (DONGSEOK_AGGRO > AGGRO_MIN) {
                 aggro = DONGSEOK_AGGRO;
                 DONGSEOK_AGGRO = DONGSEOK_AGGRO - 1;
             }
@@ -265,9 +262,15 @@ void printdongseokAction(int aAns, int M, int random, int p, int aggro) { // ¸¶µ
                 aggro = DONGSEOK_AGGRO;
             }
             printf("madongseok rest...\n");
-            printf("madongseok : %d (aggro : %d -> %d, stamina : %d -> %d)\n\n",
-                M, aggro, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA + 1);
+            if (DONGSEOK_STAMINA < STM_MAX) {
+                printf("madongseok : %d (aggro : %d -> %d, stamina : %d -> %d)\n\n",
+                       M, aggro, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA + 1);
             DONGSEOK_STAMINA++;
+            }
+            else if (DONGSEOK_STAMINA == STM_MAX) {
+                printf("madongseok : %d (aggro : %d -> %d, stamina : %d -> %d)\n\n",
+                    M, aggro, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA);
+            }
             DONGSEOK_ACTION = ACTION_REST;
             break;
         case ACTION_PROVOKE:
@@ -292,9 +295,15 @@ void printdongseokAction(int aAns, int M, int random, int p, int aggro) { // ¸¶µ
             else {
                 DONGSEOK_AGGRO = AGGRO_MAX;
             }
-            printf("madongseok : %d (aggro : %d -> %d, stamina : %d -> %d\n\n",
-                M, aggro, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA - 1);
-            DONGSEOK_STAMINA--;
+            if (DONGSEOK_STAMINA > STM_MIN) {
+                printf("madongseok : %d (aggro : %d -> %d, stamina : %d -> %d\n\n",
+                    M, aggro, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA - 1);
+                DONGSEOK_STAMINA--;
+            }
+            else if (DONGSEOK_STAMINA == STM_MIN) {
+                printf("madongseok : %d (aggro : %d -> %d, stamina : %d -> %d\n\n",
+                    M, aggro, DONGSEOK_AGGRO, DONGSEOK_STAMINA, DONGSEOK_STAMINA);
+            }
             DONGSEOK_ACTION = ACTION_PULL;
             break;
     }
@@ -311,6 +320,10 @@ void outro(int C, int Z) {
     if (C + 1 == Z) {
         printf("°ÔÀÓ ¿À¹ö!\n");
         printf("½Ã¹ÎÀÌ Á»ºñ¿¡°Ô ¹°·È½À´Ï´Ù.\n");
+    }
+    if (DONGSEOK_STAMINA == 0) {
+        printf("°ÔÀÓ ¿À¹ö!\n");
+        printf("¸¶µ¿¼®ÀÇ Ã¼·ÂÀÌ 0ÀÌ µÇ¾ú½À´Ï´Ù.\n");
     }
 }
 
@@ -389,9 +402,6 @@ int main(void) {
         printDongseokStatus(mPos, M, DONGSEOK_AGGRO, DONGSEOK_STAMINA);
         printf("\n");
 
-        printAction(C, Z, M, stm);
-        printdongseokAction(aAns, M, random, p, DONGSEOK_AGGRO, DONGSEOK_STAMINA);
-
         if (C == 1) { // ½Ã¹ÎÀÌ °¡Àå ¿ÞÂÊ Ä­¿¡ µµÂøÇÒ °æ¿ì ¼º°ø
             break;
         }
@@ -401,6 +411,10 @@ int main(void) {
         if (DONGSEOK_STAMINA == 0) {
             break;
         }
+
+        printAction(C, Z, M, stm);
+        printdongseokAction(aAns, M, random, p, DONGSEOK_AGGRO, DONGSEOK_STAMINA);
+
         turn++;
     }
     outro(C, Z);
